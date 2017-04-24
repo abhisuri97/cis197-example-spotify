@@ -28,7 +28,8 @@ function helpFormat(data) {
       name: item.name,
       id: item.id,
       preview_url: item.preview_url,
-      image: item.album.images[0].url
+      image: item.album.images[0].url,
+      isFavorite: false
     }
     results.push(res);
   }

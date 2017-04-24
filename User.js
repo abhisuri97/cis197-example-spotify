@@ -50,4 +50,5 @@ userSchema.statics.getFavoriteTracks = function(userId, cb) {
     };
   });
 };
+
 module.exports = mongoose.model('User', userSchema);

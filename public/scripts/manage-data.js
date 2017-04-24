@@ -43,7 +43,8 @@ $( document ).ready(function() {
       url: '/favorite',
       data: { id: $('#data').text(), link: id },
       success: function(data) {
-        self.text('unfavorite this');
+        var newText = self.text() === 'favorite this' ? 'unfavorite this' : 'favorite this'
+        self.text(newText);
       }
     });
   });
@@ -54,7 +55,8 @@ $( document ).ready(function() {
         [ '<div id="result-box">',
           '<h2 data-audio=' + data[i].preview_url + '>' + data[i].name + '</h2>',
           '<img src=' + data[i].image + '>',
-          '<div id="favorite" data-id=' + data[i].id + '>favorite this</div>',
+          '<div id="favorite" data-id=' + data[i].id + '>' +
+                (data[i].isFavorite === true ? 'un' : '') + 'favorite this</div>',
           '</div>'
         ]
         individualEntry = entry.join('');

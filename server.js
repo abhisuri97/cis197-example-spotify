@@ -71,13 +71,24 @@ app.post('/search', function(req, res) {
       search.getTracks(results, function(err, results) {
         res.contentType('json');
         if (err) { res.send('error' + err); }
+        for (var i = 0; i < results.length; i++) {
+          results[i].isFavorite = true;
+        }
         res.send(results);
       });
     });
   } else {
-    search.searchForSong(req.body.term, function(err, results) {
-      res.contentType('json');
-      res.send(results);
+    search.searchForSong(req.body.term, function(err, origres) {
+      User.getFavoriteTracks(req.body.id, function(err, results) {
+        for (var i = 0; i < origres.length; i++) {
+          if (results.indexOf(origres[i].id) > -1) {
+            console.log(origres[i]);
+            origres[i].isFavorite = true;
+          }
+        }
+        res.contentType('json');
+        res.send(origres);
+      });
     })
   }
 });
