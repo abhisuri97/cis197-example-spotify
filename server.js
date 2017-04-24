@@ -66,16 +66,20 @@ app.get('/songs', isLoggedIn, function(req, res, next) {
 app.post('/search', function(req, res) {
   console.log(req.body.term);
   if (req.body.term === '') {
-    User.getFavoriteTracks(req.body.id, function(err, results) {
-      if (err) { res.send('error' + err); }
-      search.getTracks(results, function(err, results) {
-        res.contentType('json');
-        if (err) { res.send('error' + err); }
-        for (var i = 0; i < results.length; i++) {
-          results[i].isFavorite = true;
-        }
-        res.send(results);
-      });
+    User.getFavoriteTracks(req.body.id, function(err, resultIds) {
+      if (resultIds.length === 0) {
+        res.send([]);
+      } else {
+        search.getTracks(resultIds, function(err, results) {
+          if (err) res.send([]);
+          res.contentType('json');
+          if (err) { res.send('error' + err); }
+          for (var i = 0; i < results.length; i++) {
+            results[i].isFavorite = true;
+          }
+          res.send(results);
+        });
+      }
     });
   } else {
     search.searchForSong(req.body.term, function(err, origres) {
