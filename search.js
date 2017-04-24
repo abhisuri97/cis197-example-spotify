@@ -14,18 +14,7 @@ var searchForSong = function(searchTerm, cb) {
 var getTracks = function(tracks, cb) {
   api.getTracks(tracks)
     .then(function(data) {
-      var results = [];
-      for(var i in data.body.tracks) {
-        var item = data.body.tracks[i];
-        var res = {
-          name: item.name,
-          id: item.id,
-          preview_url: item.preview_url,
-          image: item.album.images[0].url
-        }
-        results.push(res);
-      }
-      cb(null,results);
+      cb(null, helpFormat(data.body.tracks));
     }, function(err) {
       cb(err);
     });
