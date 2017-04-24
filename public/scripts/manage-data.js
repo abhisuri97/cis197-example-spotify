@@ -39,8 +39,10 @@ $( document ).ready(function() {
   var currentAudio = null;
 
   $('body').on('click', 'h2', function() {
+    var name = $(this).text();
     var src = $(this).data('audio');
 
+    $('#song').text(name);
     if (currentAudio && src === currentAudio.src) {
       currentAudio.paused ? currentAudio.play() : currentAudio.pause();
     } else {

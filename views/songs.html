@@ -2,9 +2,10 @@
 <script src="scripts/manage-data.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="styles/styles.css">
-  <h1>Spotify Lite</h1>
-<a href="/logout">Logout</a>
-  <input id="searchBox" type="text" class="form-control"  placeholder="Search for a Song" >
-<div id="results">
-</div>
+    <h1>Spotify Lite</h1>
+    <a href="/logout">Logout</a>
+    <input id="searchBox" type="text" class="form-control"  placeholder="Search for a Song" >
+    <div id="results">
+    </div>
 <div id="data" style="display:none"><%= user[0].spotifyId %></div>
+<div id="playing">Now playing: <span id="song">Nothing</span></div>
