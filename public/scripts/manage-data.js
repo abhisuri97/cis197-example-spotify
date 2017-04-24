@@ -1,25 +1,31 @@
-$(document).ready(function() {
+$( document ).ready(function() {
+  makeSearchAjax();
   $('#searchBox').on('keyup', function() {
-    $.ajax({
-        type: 'POST',
-        url: '/search',
-        data: { 
-          id: "<%= user[0].spotifyId %>",
-          term: $('#searchBox').val() 
-        },
-        success: function(data) {
-          $('#results').empty();
-          console.log(data);
-          addResultsToPage(data);          
-        }
-    });
+    makeSearchAjax();
   });
+
+  function makeSearchAjax() {
+    $.ajax({
+      type: 'POST',
+      url: '/search',
+      data: { 
+        id: $('#data').text(),
+        term: $('#searchBox').val() 
+      },
+      success: function(data) {
+        $('#results').empty();
+        console.log(data);
+        addResultsToPage(data);          
+      }
+    });
+  }
+
 
   var currentAudio = null;
 
   $('body').on('click', 'h2', function() {
     var src = $(this).data('audio');
-    
+
     if (currentAudio && src === currentAudio.src) {
       currentAudio.paused ? currentAudio.play() : currentAudio.pause();
     } else {
@@ -30,28 +36,29 @@ $(document).ready(function() {
   });
 
   $('body').on('click', '#favorite', function() {
+    var self = $(this);
     var id = $(this).data('id');
     $.ajax({
-        type: 'POST',
-        url: '/favorite',
-        data: { id: "<%= user[0].spotifyId %>", link: id },
-        success: function(data) {
-          console.log(data);
-        }
+      type: 'POST',
+      url: '/favorite',
+      data: { id: $('#data').text(), link: id },
+      success: function(data) {
+        self.text('unfavorite this');
+      }
     });
   });
 
   function addResultsToPage(data) {
     for(var i = 0; i < data.length; i++) {
       var entry = 
-        [ '<div>',
+        [ '<div id="result-box">',
           '<h2 data-audio=' + data[i].preview_url + '>' + data[i].name + '</h2>',
           '<img src=' + data[i].image + '>',
           '<div id="favorite" data-id=' + data[i].id + '>favorite this</div>',
           '</div>'
         ]
-      individualEntry = entry.join('');
-      $('#results').append(individualEntry);
+        individualEntry = entry.join('');
+        $('#results').append(individualEntry);
     }
   };
 });

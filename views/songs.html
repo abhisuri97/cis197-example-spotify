@@ -1,4 +1,5 @@
 <script src="scripts/jquery.min.js"></script>
+<script src="scripts/manage-data.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <h1>Spotify Lite</h1>
 <a href="/logout">Logout</a>
@@ -43,70 +44,4 @@
   <input id="searchBox" type="text" class="form-control"  placeholder="Search for a Song" >
 <div id="results">
 </div>
-
-<script>
-  $( document ).ready(function() {
-    makeSearchAjax();
-  });
-  $('#searchBox').on('keyup', function() {
-    makeSearchAjax();
-  });
-
-  function makeSearchAjax() {
-    $.ajax({
-        type: 'POST',
-        url: '/search',
-        data: { 
-          id: <%= user[0].spotifyId %>,
-          term: $('#searchBox').val() 
-        },
-        success: function(data) {
-          $('#results').empty();
-          console.log(data);
-          addResultsToPage(data);          
-        }
-    });
-  }
-
-
-  var currentAudio = null;
-
-  $('body').on('click', 'h2', function() {
-    var src = $(this).data('audio');
-    
-    if (currentAudio && src === currentAudio.src) {
-      currentAudio.paused ? currentAudio.play() : currentAudio.pause();
-    } else {
-      if (currentAudio) currentAudio.pause();
-      currentAudio = new Audio(src);
-      currentAudio.play();
-    }
-  });
-
-  $('body').on('click', '#favorite', function() {
-    var self = $(this);
-    var id = $(this).data('id');
-    $.ajax({
-        type: 'POST',
-        url: '/favorite',
-        data: { id: "<%= user[0].spotifyId %>", link: id },
-        success: function(data) {
-          self.text('unfavorite this');
-        }
-    });
-  });
-
-  function addResultsToPage(data) {
-    for(var i = 0; i < data.length; i++) {
-      var entry = 
-        [ '<div id="result-box">',
-          '<h2 data-audio=' + data[i].preview_url + '>' + data[i].name + '</h2>',
-          '<img src=' + data[i].image + '>',
-          '<div id="favorite" data-id=' + data[i].id + '>favorite this</div>',
-          '</div>'
-        ]
-      individualEntry = entry.join('');
-      $('#results').append(individualEntry);
-    }
-  };
-</script>
+<div id="data" style="display:none"><%= user[0].spotifyId %></div>
